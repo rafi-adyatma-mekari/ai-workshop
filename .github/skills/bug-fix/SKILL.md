@@ -76,21 +76,28 @@ git push origin fix/<issue>
 ```
 
 ### Step 7 — Open a pull request
-Use the PR body template below. Target `main` (or the appropriate base branch — **not** the feature branch).
+Use `gh pr create` to open the PR targeting `main` (**not** the feature branch):
 
-```markdown
-## What
+```bash
+gh pr create \
+  --base main \
+  --title "fix: <concise description>" \
+  --body "## What
 <one paragraph: what was broken and what the fix does>
 
 ## Why
 <root cause from triage report>
 
 ## How to verify
-1. `go test ./path/to/pkg -run TestBugReproduction`
-2. Expected: PASS
+\`\`\`
+go test ./path/to/pkg -run TestBugReproduction
+\`\`\`
+Expected: PASS
 
-Fixes #<issue>
+Fixes #<issue>"
 ```
+
+If a Jira issue key is linked, post a comment back to the ticket with `mcp-atlassian/jira_add_comment` containing the PR URL returned by `gh pr create`.
 
 ### Step 8 — Return to feature work
 After the PR is open, switch back to the main worktree window and continue feature development. The bugfix branch is independent — merging it will not conflict with your feature branch unless they touch the same files.
