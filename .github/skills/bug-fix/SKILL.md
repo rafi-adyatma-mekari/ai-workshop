@@ -12,13 +12,20 @@ argument-hint: "Triage report or bug description with root cause"
 - You need to implement, test, and submit the fix
 
 ## Prerequisites
-- Git worktree is set up (see `setup-parallel-workflow` skill)
 - Triage report is available (see `bug-triage` skill)
-- You are on the `fix/<issue>` branch
 
 ---
 
 ## Procedure
+
+### Step 0 — Create the worktree (ALWAYS first — never fix on the main workspace)
+```bash
+WORKTREE_PATH="../$(basename "$PWD")-bugfix"
+BUGFIX_BRANCH="fix/<issue>"
+git worktree add "$WORKTREE_PATH" -b "$BUGFIX_BRANCH"
+bash .github/hooks/scripts/copy-env-to-worktree.sh "$WORKTREE_PATH"
+```
+All subsequent steps run **inside `$WORKTREE_PATH`**, not the main workspace.
 
 ### Step 1 — Confirm branch and baseline
 ```bash

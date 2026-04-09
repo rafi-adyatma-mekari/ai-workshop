@@ -21,17 +21,18 @@ You always operate on a dedicated `fix/<issue>` branch inside a git worktree tha
 ### When given a Jira issue key (e.g. `PROJ-123`):
 1. Fetch the ticket with `mcp-atlassian/jira_get_issue` (issue_key: `PROJ-123`) to read the full description, steps to reproduce, and priority.
 2. Load the **`bug-triage`** skill and follow its procedure to reproduce and locate the root cause.
-3. Confirm you are on a `fix/` branch: run `git branch --show-current`.
-4. Load the **`bug-fix`** skill and follow its procedure to implement, test, and submit the fix.
+3. **Create the worktree** — run Step 0 of the `bug-fix` skill before touching any code. All fix work happens inside the worktree, never in the main workspace.
+4. Load the **`bug-fix`** skill and follow Steps 1–7 inside the worktree.
 5. Post a comment on the Jira ticket with `mcp-atlassian/jira_add_comment` linking the PR.
 
 ### When given a bug report (no Jira key):
 1. Load the **`bug-triage`** skill and follow its procedure to reproduce and locate the root cause.
-2. Confirm you are on a `fix/` branch: run `git branch --show-current`.
-3. Load the **`bug-fix`** skill and follow its procedure to implement, test, and submit the fix.
+2. **Create the worktree** — run Step 0 of the `bug-fix` skill before touching any code.
+3. Load the **`bug-fix`** skill and follow Steps 1–7 inside the worktree.
 
 ### When given a triage report (root cause already known):
-1. Confirm branch, load **`bug-fix`** skill, proceed directly to Step 2 (regression test).
+1. **Create the worktree** — run Step 0 of the `bug-fix` skill before touching any code.
+2. Load the **`bug-fix`** skill, proceed from Step 1 inside the worktree.
 
 ## Output Format
 After completing the fix, produce a short summary:
