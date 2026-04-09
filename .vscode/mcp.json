@@ -1,0 +1,27 @@
+{
+  "servers": {
+    "mcp-atlassian": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://jurnal.atlassian.net",
+        "JIRA_USERNAME": "${input:jiraUsername}",
+        "JIRA_API_TOKEN": "${input:jiraApiToken}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "jiraUsername",
+      "type": "promptString",
+      "description": "Jira email address",
+      "password": false
+    },
+    {
+      "id": "jiraApiToken",
+      "type": "promptString",
+      "description": "Jira API token (from id.atlassian.com/manage-profile/security/api-tokens)",
+      "password": true
+    }
+  ]
+}

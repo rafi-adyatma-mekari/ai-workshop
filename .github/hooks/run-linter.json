@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": ".github/hooks/scripts/run-linter.sh",
+        "timeout": 60
+      }
+    ]
+  }
+}
