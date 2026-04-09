@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# PostToolUse hook — run golangci-lint after any file-editing tool.
-# Skips silently for non-edit tool invocations to avoid noise.
+# PostToolUse hook — run golangci-lint after any .go file edit.
+# Skips silently for non-edit tool invocations or non-Go files.
 
 set -euo pipefail
 
@@ -16,10 +16,16 @@ if ! echo "$TOOL" | grep -qE "^($EDIT_TOOLS)$"; then
   exit 0
 fi
 
+# Only run when the edited file is a .go file
+FILE=$(echo "$INPUT" | jq -r '.toolInput.filePath // .tool_input.file_path // ""')
+if [[ "$FILE" != *.go ]]; then
+  exit 0
+fi
+
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
 cd "$REPO_ROOT"
 
-echo "==> Running golangci-lint after edit to $(echo "$INPUT" | jq -r '.toolInput.filePath // .tool_input.file_path // "file"')..."
+echo "==> Running golangci-lint after edit to $FILE..."
 
 if golangci-lint run ./... 2>&1; then
   echo "==> Lint passed."

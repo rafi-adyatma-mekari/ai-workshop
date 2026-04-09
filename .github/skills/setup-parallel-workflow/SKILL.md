@@ -37,19 +37,28 @@ BUGFIX_BRANCH="fix/<issue-or-description>"
 git worktree add "$WORKTREE_PATH" -b "$BUGFIX_BRANCH"
 ```
 
-### 3. Verify worktrees
+### 3. Copy gitignored environment files to the worktree
+Files like `.env` are not tracked by git, so the new worktree won't have them automatically. Run the helper script to mirror them:
+
+```bash
+bash .github/hooks/scripts/copy-env-to-worktree.sh "$WORKTREE_PATH"
+```
+
+The script copies any gitignored files matching: `.env`, `.env.*`, `*.pem`, `*.key`, `config.local.*`, `.secrets`. Extend the `PATTERNS` array in the script if your project has additional ignored config files.
+
+### 4. Verify worktrees
 ```bash
 git worktree list
 ```
 Expected output shows both paths and their checked-out branches.
 
-### 4. Open the bugfix worktree in a new VS Code window
+### 5. Open the bugfix worktree in a new VS Code window
 ```bash
 code "$WORKTREE_PATH"
 ```
 Use the **BugFixer** agent in that window. Continue using the **FeatureDev** agent in this window.
 
-### 5. After the fix is merged — remove the worktree
+### 6. After the fix is merged — remove the worktree
 ```bash
 git worktree remove "$WORKTREE_PATH"
 git branch -d "$BUGFIX_BRANCH"   # only after PR is merged
